@@ -13,4 +13,15 @@ class MainCategoryFirebaseServices{
     catch(error){print(error);}
   }
 
+  fetchMainCategories() {
+
+    var mainCategories = FirebaseFirestore.instance
+    .collection('Companies')
+    .doc('martaSudol')
+    .collection('mainCategories').snapshots();
+
+    return mainCategories;
+
+  }
+
 }

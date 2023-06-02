@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/controllers/main_category_controller.dart';
+import 'package:meal_orders/pages/start_page.dart';
 import 'package:meal_orders/services/firebase_services/main_category_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -57,6 +58,7 @@ class AddCategoryPage extends StatelessWidget {
                           MainCategoryFirebaseServices().addNewMainCategory(mainCategoryController.newCategory);
                         }
                         catch(error){};
+                        Get.to(()=>const StartPage(), transition: Transition.leftToRight);
                       }),
                       CupertinoButton(child: const Text('Anuluj'), onPressed: () {})
                     ],
