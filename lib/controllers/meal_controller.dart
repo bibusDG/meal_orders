@@ -23,7 +23,7 @@ class MealController extends GetxController{
   void onInit(){
     super.onInit();
     var newMeal =  MealModel(
-        unitMeasure: 'szt.',
+        unitMeasure: 'sztuka',
         mealName: '',
         mealPicture: '',
         mealDescription: '',

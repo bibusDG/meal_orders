@@ -37,11 +37,9 @@ class CustomCupertinoTextField extends StatelessWidget {
           if(key == const Key('CategoryName')){
             controller.newCategory.categoryName = text;
             controller.refreshNewCategoryModel();
-            print(text);
           }else if(key == const Key('MealName')){
             controller.newMeal.mealName = text;
             controller.refreshNewMealModel();
-            print(text);
           }else if(key == const Key('MealPrice')){
             controller.newMeal.mealPrice = text;
             controller.refreshNewMealModel();

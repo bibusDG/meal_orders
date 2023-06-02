@@ -71,7 +71,6 @@ class AddMealPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    mealController.newMeal.mealAvailability == true ?
                     Column(
                       children: [
                         const SizedBox(height: 30.0,),
@@ -80,24 +79,8 @@ class AddMealPage extends StatelessWidget {
                           children: [
                             Column(
                               children: [
-                                const Text('Ilość'),
-                                const SizedBox(height: 10.0,),
-                                SizedBox(
-                                    width: 60,
-                                    child: CustomCupertinoTextField(
-                                        textAlignment: TextAlignVertical.center,
-                                        keyboardType: TextInputType.number,
-                                        placeholder: '1',
-                                        controller: mealController,
-                                        suffixText: '')
-                                )
-                              ],
-                            ),
-
-                            Column(
-                              children: [
-                                const Text('Miara'),
-                                const SizedBox(height: 40.0,),
+                                const Text('Jednostka miary'),
+                                const SizedBox(height: 30.0,),
                                 GestureDetector(
                                     child: Text(mealController.newMeal.unitMeasure),
                                     onTap: () {
@@ -115,29 +98,29 @@ class AddMealPage extends StatelessWidget {
                                                   children: [
                                                     GestureDetector(
                                                       child: Text('sztuka', style: TextStyle(
-                                                          fontSize: mealController.newMeal.unitMeasure == 'szt.' ?
+                                                          fontSize: mealController.newMeal.unitMeasure == 'sztuka' ?
                                                           30 : 15
                                                       ),),
                                                       onTap: () {
-                                                        mealController.newMeal.unitMeasure = 'szt.';
+                                                        mealController.newMeal.unitMeasure = 'sztuka';
                                                         mealController.refreshNewMealModel();
                                                       },
                                                     ),
                                                     GestureDetector(child: Text('litr', style: TextStyle(
-                                                        fontSize: mealController.newMeal.unitMeasure == 'ltr.' ?
+                                                        fontSize: mealController.newMeal.unitMeasure == 'litr' ?
                                                         30 : 15
                                                     ),),
                                                       onTap: () {
-                                                        mealController.newMeal.unitMeasure = 'ltr.';
+                                                        mealController.newMeal.unitMeasure = 'litr';
                                                         mealController.refreshNewMealModel();
                                                       },
                                                     ),
                                                     GestureDetector(child: Text('porcja', style: TextStyle(
-                                                        fontSize: mealController.newMeal.unitMeasure == 'prc.' ?
+                                                        fontSize: mealController.newMeal.unitMeasure == 'porcja' ?
                                                         30 : 15
                                                     ),),
                                                       onTap: () {
-                                                        mealController.newMeal.unitMeasure = 'prc.';
+                                                        mealController.newMeal.unitMeasure = 'porcja';
                                                         mealController.refreshNewMealModel();
                                                       },
                                                     )
@@ -153,10 +136,8 @@ class AddMealPage extends StatelessWidget {
                           ],
                         ),
                       ],
-                    )
-                        :
-                    const SizedBox(),
-                    const SizedBox(height: 30.0,),
+                    ),
+                    const SizedBox(height: 50.0,),
                     const Text('Możliwe warianty'),
                     const SizedBox(height: 15.0,),
                     Row(
