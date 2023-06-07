@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:meal_orders/models/main_category_model.dart';
 
 class MainCategoryFirebaseServices{
@@ -10,10 +9,10 @@ class MainCategoryFirebaseServices{
           .collection('Companies').doc('martaSudol')
           .collection('mainCategories').add(newCategory.toJson());
     }
-    catch(error){print(error);}
+    catch(error){}
   }
 
-  fetchMainCategories() {
+  streamMainCategories() {
 
     var mainCategories = FirebaseFirestore.instance
     .collection('Companies')
@@ -23,5 +22,13 @@ class MainCategoryFirebaseServices{
     return mainCategories;
 
   }
+
+  // getMainCategories(){
+  //   var mainCategories = FirebaseFirestore.instance
+  //       .collection('Companies')
+  //       .doc('martaSudol')
+  //       .collection('mainCategories').get();
+  //   return mainCategories;
+  // }
 
 }

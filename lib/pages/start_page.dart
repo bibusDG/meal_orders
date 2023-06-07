@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/models/main_category_model.dart';
 import 'package:meal_orders/pages/admin_panel_page.dart';
+import 'package:meal_orders/pages/products_page.dart';
 import 'package:meal_orders/services/firebase_services/main_category_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -23,7 +24,7 @@ class StartPage extends StatelessWidget {
          title: const Text('Deal with Meal'),
        ),
         body: StreamBuilder(
-          stream: MainCategoryFirebaseServices().fetchMainCategories(),
+          stream: MainCategoryFirebaseServices().streamMainCategories(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
             if(snapshot.hasData){
               if(snapshot.data.docs.length == 0){
@@ -40,11 +41,14 @@ class StartPage extends StatelessWidget {
                   MainCategoryModel mainCategory = MainCategoryModel.fromJson(Map<String, dynamic>.from(snapshot.data.docs[index].data()));
                   return SizedBox(
                     height: 280,
-                    child: Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                      margin: const EdgeInsets.all(10.0),
-                      color: Colors.white,
-                      child: Center(child: Text(mainCategory.categoryName, style: const TextStyle(color: Colors.black),)),
+                    child: GestureDetector(
+                      onTap: ()=> Get.to(()=>const ProductsPage(), arguments: mainCategory),
+                      child: Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                        margin: const EdgeInsets.all(10.0),
+                        color: Colors.white,
+                        child: Center(child: Text(mainCategory.categoryName, style: const TextStyle(color: Colors.black),)),
+                      ),
                     ),
                   );
               });

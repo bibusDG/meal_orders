@@ -4,7 +4,9 @@
 
 import 'dart:convert';
 
-class MealModel {
+import 'package:meal_orders/models/main_category_model.dart';
+
+class MealModel extends MainCategoryModel{
   String unitMeasure;
   String mealName;
   String mealPicture;
@@ -15,6 +17,8 @@ class MealModel {
   List<dynamic> mealVariants;
 
   MealModel({
+    required super.categoryName,
+    required super.categoryPicture,
     required this.unitMeasure,
     required this.mealName,
     required this.mealPicture,
@@ -25,7 +29,10 @@ class MealModel {
     required this.mealVariants,
   });
 
+  @override
   MealModel copyWith({
+    String? categoryName,
+    String? categoryPicture,
     String? unitMeasure,
     String? mealName,
     String? mealPicture,
@@ -36,6 +43,8 @@ class MealModel {
     List<dynamic>? mealVariants,
   }) =>
       MealModel(
+        categoryName: categoryName ?? this.categoryName,
+        categoryPicture: categoryPicture ?? this.categoryPicture,
         unitMeasure: unitMeasure ?? this.unitMeasure,
         mealName: mealName ?? this.mealName,
         mealPicture: mealPicture ?? this.mealPicture,
@@ -48,9 +57,12 @@ class MealModel {
 
   factory MealModel.fromRawJson(String str) => MealModel.fromJson(json.decode(str));
 
+  @override
   String toRawJson() => json.encode(toJson());
 
   factory MealModel.fromJson(Map<String, dynamic> json) => MealModel(
+    categoryName: json['categoryName'],
+    categoryPicture: json['categoryPicture'],
     unitMeasure: json['unitMeasure'],
     mealName: json["mealName"],
     mealPicture: json["mealPicture"],
@@ -61,7 +73,10 @@ class MealModel {
     mealVariants: List<dynamic>.from(json["mealVariants"].map((x) => x)),
   );
 
+  @override
   Map<String, dynamic> toJson() => {
+    "categoryName": categoryName,
+    "categoryPicture": categoryPicture,
     "unitMeasure":unitMeasure,
     "mealName": mealName,
     "mealPicture": mealPicture,

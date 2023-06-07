@@ -7,6 +7,7 @@ class MealController extends GetxController{
 
   RxBool veganCheckBox = false.obs;
   RxBool meatCheckBox = false.obs;
+  RxString chosenVariant = 'vegan'.obs;
 
   final _newMeal = MealModel(
       unitMeasure: '',
@@ -16,7 +17,9 @@ class MealController extends GetxController{
       mealPrice: '',
       mealAvailability: false,
       mealContent: [],
-      mealVariants: []).obs;
+      mealVariants: [],
+      categoryName: '',
+      categoryPicture: '').obs;
   MealModel get newMeal => _newMeal.value;
 
   @override
@@ -30,7 +33,9 @@ class MealController extends GetxController{
         mealPrice: '',
         mealAvailability: false,
         mealContent: [],
-        mealVariants: []);
+        mealVariants: [],
+        categoryName: '...kategoria..',
+        categoryPicture: '');
     _newMeal(newMeal);
   }
 

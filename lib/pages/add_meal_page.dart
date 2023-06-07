@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/controllers/meal_controller.dart';
+import 'package:meal_orders/models/main_category_model.dart';
 import 'package:meal_orders/myWidgets/custom_cupertino_text_field.dart';
+import 'package:meal_orders/pages/products_page.dart';
+import 'package:meal_orders/services/firebase_services/product_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class AddMealPage extends StatelessWidget {
@@ -11,6 +15,25 @@ class AddMealPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MealController mealController = Get.put(MealController());
+    const double _itemExtent = 32.0;
+    List _mainCategoryList = [];
+
+    getCategoryList() async {
+      _mainCategoryList = [];
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+      await FirebaseFirestore.instance
+          .collection('Companies')
+          .doc('martaSudol')
+          .collection('mainCategories')
+          .get();
+      var listElements = snapshot.docs
+          .map((docSnapshot) => MainCategoryModel.fromJson(docSnapshot.data()))
+          .toList();
+      for (var item in listElements) {
+        _mainCategoryList.add(item.categoryName);
+      }
+    }
+
 
     return ResponsiveScaledBox(
       width: 360,
@@ -22,6 +45,27 @@ class AddMealPage extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Dodaj potrawę'),
             centerTitle: true,
+          ),
+          bottomNavigationBar: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(24),
+              topLeft: Radius.circular(24),
+            ),
+            child: BottomAppBar(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(() {
+                    return IconButton(onPressed: addProductConditions() == true ? () async {
+                      try{
+                        await ProductFirebaseServices().addProduct(mealController.newMeal);
+                        Get.to(()=>const ProductsPage(), arguments: mealController.newMeal.categoryName);
+                      }catch(error){print(error);}
+                    } : null, icon: const Icon(Icons.add));
+                  }),
+                ],
+              ),
+            ),
           ),
           body: Obx(() {
             return SingleChildScrollView(
@@ -42,9 +86,39 @@ class AddMealPage extends StatelessWidget {
                     const Text('Wybierz kategorię produktu'),
                     const SizedBox(height: 15.0,),
                     CupertinoButton(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10.0),
-                        child: const Text('...kategoria...'), onPressed: (){}
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: Text(mealController.newMeal.categoryName), onPressed: () async {
+                      await getCategoryList();
+                      showModalBottomSheet(
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.0))),
+                        context: context, builder: (context) =>
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(height: 10.0,),
+                              const Text('Wybierz kategorię produktu'),
+                              const SizedBox(height: 20.0,),
+                              SizedBox(
+                                  height: 170,
+                                  child: CupertinoPicker(
+                                    magnification: 1.3,
+                                    // backgroundColor: Colors.white,
+                                    itemExtent: _itemExtent,
+                                    onSelectedItemChanged: (int value) {
+                                      mealController.newMeal.categoryName = _mainCategoryList[value];
+                                      mealController.refreshNewMealModel();
+                                    },
+                                    children: List<Widget>.generate(_mainCategoryList.length, (int index) {
+                                      return Center(child: Text(_mainCategoryList[index], style: const TextStyle(color: Colors.white),));
+                                    }),)
+                              ),
+                            ],
+                          ),
+                      );
+                      mealController.newMeal.categoryName = _mainCategoryList[0];
+                      mealController.refreshNewMealModel();
+                    }
                     ),
                     const SizedBox(height: 30.0,),
                     const Text('Podaj cenę potrawy/produktu'),
@@ -147,30 +221,31 @@ class AddMealPage extends StatelessWidget {
                           width: 140,
                           height: 40,
                           child: CheckboxListTile(
-                            activeColor: Colors.black,
-                            title: const Text('Wege'),
-                              value: mealController.veganCheckBox.value, onChanged: (newValue){
-                              mealController.veganCheckBox.value = newValue!;
-                              if(mealController.veganCheckBox.value == false && mealController.newMeal.mealVariants.contains('vegan') ){
-                                mealController.newMeal.mealVariants.remove('vegan');
-                              }else{
-                                mealController.newMeal.mealVariants.add('vegan');
-                              }
+                              activeColor: Colors.black,
+                              title: const Text('Vege'),
+                              value: mealController.veganCheckBox.value, onChanged: (newValue) {
+                            mealController.veganCheckBox.value = newValue!;
+                            if (mealController.veganCheckBox.value == false && mealController.newMeal.mealVariants.contains('vegan')) {
+                              mealController.newMeal.mealVariants.remove('vegan');
+                            } else {
+                              mealController.newMeal.mealVariants.add('vegan');
+                            }
+                            mealController.refreshNewMealModel();
                           }),
                         ),
                         SizedBox(
                           width: 140,
                           height: 40,
                           child: CheckboxListTile(
-                            activeColor: Colors.black,
+                              activeColor: Colors.black,
                               title: const Text('Mięso'),
-                              value: mealController.meatCheckBox.value, onChanged: (newValue){
-                              mealController.meatCheckBox.value = newValue!;
-                              if(mealController.meatCheckBox.value == false && mealController.newMeal.mealVariants.contains('meat') ){
-                                mealController.newMeal.mealVariants.remove('meat');
-                              }else{
-                                mealController.newMeal.mealVariants.add('meat');
-                              }
+                              value: mealController.meatCheckBox.value, onChanged: (newValue) {
+                            mealController.meatCheckBox.value = newValue!;
+                            if (mealController.meatCheckBox.value == false && mealController.newMeal.mealVariants.contains('mięso')) {
+                              mealController.newMeal.mealVariants.remove('mięso');
+                            } else {
+                              mealController.newMeal.mealVariants.add('mięso');
+                            }mealController.refreshNewMealModel();
                           }),
                         ),
                       ],
@@ -193,9 +268,12 @@ class AddMealPage extends StatelessWidget {
                     const Text('Dodaj zdjęcie produktu'),
                     const SizedBox(height: 15.0,),
                     CupertinoButton(
-                      borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(10.0),
                         color: Colors.black,
-                        child: const Text('Dodaj'), onPressed: (){}),
+                        child: const Text('Dodaj'), onPressed: () {
+                      mealController.newMeal.mealPicture = 'picture';
+                      mealController.refreshNewMealModel();
+                    }),
                     const SizedBox(height: 40.0,)
 
                   ],
@@ -206,5 +284,21 @@ class AddMealPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  addProductConditions() {
+    MealController mealController = Get.find();
+    if (
+    mealController.newMeal.mealName != '' &&
+        mealController.newMeal.categoryName != '...kategoria...' &&
+        mealController.newMeal.mealPrice != '' &&
+        mealController.newMeal.mealVariants.isNotEmpty &&
+        mealController.newMeal.mealDescription != '' &&
+        mealController.newMeal.mealPicture != ''
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
