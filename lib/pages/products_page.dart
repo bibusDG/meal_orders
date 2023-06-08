@@ -63,7 +63,23 @@ class ProductsPage extends StatelessWidget {
                           margin: const EdgeInsets.only(top: 20.0, left: 30, right: 30.0),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                           color: Colors.white,
-                          child: Center(child: Text(mealModel.mealName, style: const TextStyle(color: Colors.black),)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              // SizedBox(width: 10.0,),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                width: 110,
+                                height: 110,
+                                // color: Colors.black,
+                              ),
+                              // SizedBox(width: 5.0,),
+                              Center(child: Text(mealModel.mealName, style: const TextStyle(color: Colors.black),)),
+                              SizedBox(width: 20.0,)
+                            ],
+                          ),
                         ),
                       ),
                     ),

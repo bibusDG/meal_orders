@@ -43,12 +43,28 @@ class StartPage extends StatelessWidget {
                     height: 280,
                     child: GestureDetector(
                       onTap: ()=> Get.to(()=>const ProductsPage(), arguments: mainCategory),
-                      child: Card(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                        margin: const EdgeInsets.all(10.0),
-                        color: Colors.white,
-                        child: Center(child: Text(mainCategory.categoryName, style: const TextStyle(color: Colors.black),)),
-                      ),
+                      child: Stack(
+                        children: [
+                          Card(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                          margin: const EdgeInsets.all(10.0),
+                          color: Colors.white,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: mainCategory.categoryName == "Chleby" ? AssetImage(
+                                    'assets/images/chleby.jpg') : AssetImage(
+                                    'assets/images/zupy.jpg'),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                        ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Text(mainCategory.categoryName, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
+                          ),
+                      ]),
                     ),
                   );
               });

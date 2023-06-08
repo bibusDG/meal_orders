@@ -22,12 +22,10 @@ class DetailedProductPage extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 20.0,),
-              Center(
-                child: Container(
-                  color: Colors.red,
-                  width: 200,
+              const Center(
+                child: SizedBox(
                   height: 200,
-                  child: const Center(child: Text('Photo')),
+                  child: Center(child: Text('Photo')),
                 ),
               ),
               const SizedBox(height: 20.0,),
@@ -101,7 +99,7 @@ class DetailedProductPage extends StatelessWidget {
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.black),
                                               color: mealController.chosenVariant.value == _product.mealVariants[index] ?
-                                              Colors.amberAccent : Colors.white,
+                                              Colors.grey[400] : Colors.white,
                                               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                             ),
                                             width: 60,
@@ -114,6 +112,54 @@ class DetailedProductPage extends StatelessWidget {
                             })
                         );
                       }),
+                      const SizedBox(height: 15.0,),
+                      Expanded(
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                                  decoration: const BoxDecoration(color: Colors.white),
+                                  alignment: Alignment.topLeft,
+                                  // height: 240,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('Opis produktu', style: TextStyle(color: Colors.black, fontSize: 18),),
+                                          const SizedBox(height: 15.0,),
+                                          Text(_product.mealDescription, textAlign: TextAlign.justify, style: TextStyle(color: Colors.black),),
+                                          SizedBox(height: 40.0,),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              ),
+                            Align(
+                              alignment: Alignment(0.9,0.80),
+                              child: SizedBox(
+                                width: 75,
+                                height: 75,
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: Ink(
+                                    decoration: const ShapeDecoration(
+                                      color: Colors.white,
+                                      shape: CircleBorder(),
+                                    ),
+                                    child: IconButton(
+                                      tooltip: "Dodaj do koszyka",
+                                      icon: Icon(Icons.shopping_cart_outlined, size: 30,),
+                                      color: Colors.black,
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ),
+                              )
+                            )
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
