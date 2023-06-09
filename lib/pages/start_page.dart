@@ -1,28 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/main_category_model.dart';
-import 'package:meal_orders/pages/admin_panel_page.dart';
+// import 'package:meal_orders/pages/admin_panel_page.dart';
 import 'package:meal_orders/pages/products_page.dart';
 import 'package:meal_orders/services/firebase_services/main_category_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
+import '../models/user_model.dart';
+import '../myWidgets/custom_AppBar_widget.dart';
+import 'account_page.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    UserController _user = Get.put(UserController());
+
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
-       appBar: AppBar(
-         actions: [
-           IconButton(onPressed: (){
-             Get.to(()=>const AdminPanelPage());
-           }, icon: const Icon(Icons.admin_panel_settings)),
-         ],
-         centerTitle: true,
-         title: const Text('Deal with Meal'),
-       ),
+       appBar: PreferredSize(
+         preferredSize: const Size.fromHeight(70.0),
+        child: CustomAppBarWidget(
+          user: _user, appBarText: 'Sudołki',),),
         body: StreamBuilder(
           stream: MainCategoryFirebaseServices().streamMainCategories(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
@@ -52,8 +56,8 @@ class StartPage extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: mainCategory.categoryName == "Chleby" ? AssetImage(
-                                    'assets/images/chleby.jpg') : AssetImage(
+                                image: mainCategory.categoryName == "Chleby" ? const AssetImage(
+                                    'assets/images/chleby.jpg') : const AssetImage(
                                     'assets/images/zupy.jpg'),
                                 fit: BoxFit.fill,
                               ),

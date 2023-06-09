@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class CustomCupertinoTextField extends StatelessWidget {
   const CustomCupertinoTextField({
     Key? key,
+    required this.obscureText,
     required this.textAlignment,
     required this.keyboardType,
     required this.placeholder,
@@ -16,6 +17,7 @@ class CustomCupertinoTextField extends StatelessWidget {
   final String? placeholder;
   final dynamic controller;
   final String? suffixText;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +27,14 @@ class CustomCupertinoTextField extends StatelessWidget {
       height: 50,
       width: 300,
       child: CupertinoTextField(
+        obscuringCharacter: '*',
+        obscureText: obscureText,
         keyboardType: _keyboardType,
         suffix: Text(suffixText!),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.black),
         textAlignVertical: _textAlignment,
         cursorColor: Colors.white,
-        maxLines: null,
+        maxLines: obscureText == false ? null : 1,
         placeholder: placeholder,
         cursorHeight: 20.0,
         onChanged: (text) {

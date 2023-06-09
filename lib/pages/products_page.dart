@@ -3,9 +3,11 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/models/main_category_model.dart';
 import 'package:meal_orders/models/meal_model.dart';
+import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/services/firebase_services/product_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../controllers/user_controller.dart';
 import 'detailed_product_page.dart';
 
 class ProductsPage extends StatelessWidget {
@@ -15,13 +17,13 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     MainCategoryModel _category = Get.arguments;
-
+    UserController _user = Get.find();
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(_category.categoryName),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+          child: CustomAppBarWidget(user: _user, appBarText: _category.categoryName,),
         ),
         body: FutureBuilder(
           future: ProductFirebaseServices().fetchProducts(_category.categoryName) ,
@@ -54,7 +56,7 @@ class ProductsPage extends StatelessWidget {
                               onPressed: (){},
                               icon: const Icon(Icons.edit))
                         ],),
-                      enabled: true,
+                      enabled: _user.user.isAdmin == true ? true : false,
                       child: GestureDetector(
                         onTap: (){
                           Get.to(()=>const DetailedProductPage(), arguments: mealModel);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/controllers/meal_controller.dart';
+import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/meal_model.dart';
+import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class DetailedProductPage extends StatelessWidget {
@@ -9,14 +11,17 @@ class DetailedProductPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     MealController mealController = Get.put(MealController());
+    UserController _user = Get.find();
     MealModel _product = Get.arguments;
+
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Text(_product.mealName),
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(70.0),
+            child: CustomAppBarWidget(user: _user, appBarText: _product.mealName,),
           ),
           body: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +52,7 @@ class DetailedProductPage extends StatelessWidget {
                           Row(
                             children: [
                               const SizedBox(width: 10.0,),
-                              Text(_product.mealName.toUpperCase(), style: TextStyle(color: Colors.black, fontSize: 22.0),),
+                              Text(_product.mealName.toUpperCase(), style: const TextStyle(color: Colors.black, fontSize: 22.0),),
                             ],
                           ),
                           Row(
@@ -128,15 +133,15 @@ class DetailedProductPage extends StatelessWidget {
                                         children: [
                                           const Text('Opis produktu', style: TextStyle(color: Colors.black, fontSize: 18),),
                                           const SizedBox(height: 15.0,),
-                                          Text(_product.mealDescription, textAlign: TextAlign.justify, style: TextStyle(color: Colors.black),),
-                                          SizedBox(height: 40.0,),
+                                          Text(_product.mealDescription, textAlign: TextAlign.justify, style: const TextStyle(color: Colors.black),),
+                                          const SizedBox(height: 40.0,),
                                         ],
                                       ),
                                     ),
                                   ),
                               ),
                             Align(
-                              alignment: Alignment(0.9,0.80),
+                              alignment: const Alignment(0.9,0.80),
                               child: SizedBox(
                                 width: 75,
                                 height: 75,
@@ -149,7 +154,7 @@ class DetailedProductPage extends StatelessWidget {
                                     ),
                                     child: IconButton(
                                       tooltip: "Dodaj do koszyka",
-                                      icon: Icon(Icons.shopping_cart_outlined, size: 30,),
+                                      icon: const Icon(Icons.shopping_cart_outlined, size: 30,),
                                       color: Colors.black,
                                       onPressed: () {},
                                     ),

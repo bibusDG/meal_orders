@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/controllers/meal_controller.dart';
+import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/main_category_model.dart';
+import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/myWidgets/custom_cupertino_text_field.dart';
 import 'package:meal_orders/pages/products_page.dart';
 import 'package:meal_orders/services/firebase_services/product_firebase_services.dart';
@@ -14,6 +16,8 @@ class AddMealPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    UserController _user = Get.find();
     MealController mealController = Get.put(MealController());
     const double _itemExtent = 32.0;
     List _mainCategoryList = [];
@@ -42,9 +46,12 @@ class AddMealPage extends StatelessWidget {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Dodaj potrawę'),
-            centerTitle: true,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(70.0),
+            child: CustomAppBarWidget(
+              user: _user,
+              appBarText: 'Dodaj produkt',
+            ),
           ),
           bottomNavigationBar: ClipRRect(
             borderRadius: const BorderRadius.only(
@@ -76,6 +83,7 @@ class AddMealPage extends StatelessWidget {
                     const Text('Podaj nazwę potrawy/produktu'),
                     const SizedBox(height: 15.0,),
                     CustomCupertinoTextField(
+                        obscureText: false,
                         textAlignment: TextAlignVertical.center,
                         keyboardType: TextInputType.text,
                         placeholder: 'Zupa cebulowa',
@@ -124,6 +132,7 @@ class AddMealPage extends StatelessWidget {
                     const Text('Podaj cenę potrawy/produktu'),
                     const SizedBox(height: 15.0,),
                     CustomCupertinoTextField(
+                        obscureText: false,
                         textAlignment: TextAlignVertical.center,
                         keyboardType: TextInputType.number,
                         placeholder: '0',
@@ -256,6 +265,7 @@ class AddMealPage extends StatelessWidget {
                     SizedBox(
                       height: 400,
                       child: CustomCupertinoTextField(
+                        obscureText: false,
                         textAlignment: TextAlignVertical.top,
                         keyboardType: TextInputType.multiline,
                         placeholder: '...szczegółowy opis...',

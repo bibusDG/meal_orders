@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/controllers/user_controller.dart';
+import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/pages/actual_orders_page.dart';
 import 'package:meal_orders/pages/add_category_page.dart';
 import 'package:meal_orders/pages/add_meal_page.dart';
@@ -11,13 +13,19 @@ class AdminPanelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    UserController _user = Get.find();
+
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Panel administratora'),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.0),
+          child: CustomAppBarWidget(
+            user: _user,
+            appBarText: 'Panel administratora',
+          ),
         ),
         body: Column(
           children: [
