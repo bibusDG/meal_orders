@@ -18,11 +18,12 @@ class ProductsPage extends StatelessWidget {
 
     MainCategoryModel _category = Get.arguments;
     UserController _user = Get.find();
+
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70.0),
+          preferredSize: const Size.fromHeight(70.0),
           child: CustomAppBarWidget(user: _user, appBarText: _category.categoryName,),
         ),
         body: FutureBuilder(

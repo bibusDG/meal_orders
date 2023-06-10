@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:meal_orders/models/user_model.dart';
 
 class CustomCupertinoTextField extends StatelessWidget {
   const CustomCupertinoTextField({
@@ -50,6 +51,27 @@ class CustomCupertinoTextField extends StatelessWidget {
           }else if(key == const Key('MealDescription')){
             controller.newMeal.mealDescription = text;
             controller.refreshNewMealModel();
+          }else if(key == const Key('registrationUserName')){
+            controller.user.userName = text;
+            controller.refreshUserModel;
+          }else if(key == const Key('registrationUserSurname')){
+            controller.user.userSurName = text;
+            controller.refreshUserModel;
+          }else if(key == const Key('registrationLogin')){
+            controller.user.userLogin = text;
+            controller.refreshUserModel;
+          }else if(key == const Key('registrationPassword')){
+            controller.user.userPassword = text;
+            controller.refreshUserModel;
+          }else if(key == const Key('registrationRepeatPassword')){
+            controller.repeatedPassword.value = text;
+            // controller.refreshUserModel;
+          }else if(key == const Key('accountLogin')){
+            controller.user.userLogin = text;
+            controller.refreshUserModel;
+          }else if(key == const Key('accountPassword')){
+            controller.user.userPassword = text;
+            controller.refreshUserModel;
           }
 
         },

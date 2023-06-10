@@ -82,6 +82,8 @@ class StartPage extends StatelessWidget {
   }
 }
 
+
+
 // child: ListView.builder(
 // padding: const EdgeInsets.all(30.0),
 // itemCount: 10,

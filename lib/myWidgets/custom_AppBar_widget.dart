@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/pages/start_page.dart';
 import '../controllers/user_controller.dart';
 import '../pages/account_page.dart';
 import '../pages/registration_page.dart';
@@ -22,7 +23,7 @@ class CustomAppBarWidget extends StatelessWidget {
       actions: [
         IconButton(onPressed: (){
           showCupertinoModalPopup(context: context, builder: (_){
-            return _user.user.userLoggedIn == false ?
+            return _user.userLoggedIn.value == false ?
             CupertinoActionSheet(
               title: const Text('Wybierz opcję'),
               actions:
@@ -34,10 +35,10 @@ class CustomAppBarWidget extends StatelessWidget {
                 CupertinoActionSheetAction(onPressed: (){
                   Get.back();
                   Get.to(()=> const RegistrationPage());
-                }, child: Text('Zarejestruj się')),
+                }, child: const Text('Zarejestruj się')),
               ],
             ) :
-            _user.user.isAdmin == true && _user.user.userLoggedIn == true ?
+            _user.user.isAdmin == true && _user.userLoggedIn.value == true ?
             CupertinoActionSheet(
               title: const Text('Wybierz opcję'),
               actions:
@@ -51,13 +52,18 @@ class CustomAppBarWidget extends StatelessWidget {
               title: const Text('Wybierz opcję'),
               actions:
               [
-                CupertinoActionSheetAction(onPressed: (){}, child: Text('Wyloguj się')),
-                CupertinoActionSheetAction(onPressed: (){}, child: Text('Zmień swój login')),
+                CupertinoActionSheetAction(onPressed: (){
+                  _user.userLoggedIn.value = false;
+                  Get.offAll(()=>const StartPage());
+                }, child: const Text('Wyloguj się')),
+                CupertinoActionSheetAction(onPressed: (){}, child: const Text('Zmień swój login')),
               ],
             );
           });
           // Get.to(()=>const AccountPage());
         }, icon: const Icon(Icons.account_circle_outlined)),
+        _user.userLoggedIn.value == true ?
+            IconButton(onPressed: (){}, icon: const Icon(Icons.shopping_cart_outlined)) : const SizedBox(),
       ],
       centerTitle: true,
       title: Text(appBarText),

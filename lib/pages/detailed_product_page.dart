@@ -156,7 +156,13 @@ class DetailedProductPage extends StatelessWidget {
                                       tooltip: "Dodaj do koszyka",
                                       icon: const Icon(Icons.shopping_cart_outlined, size: 30,),
                                       color: Colors.black,
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _user.userLoggedIn.value == false ?
+                                            Get.defaultDialog(
+                                              title: 'Uwaga',
+                                              content: Text('Aby dodać produkty do koszyka musisz być zalogowany')
+                                            ): null;
+                                      },
                                     ),
                                   ),
                                 ),

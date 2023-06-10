@@ -12,7 +12,7 @@ class UserModel {
   String userPassword;
   List<MealModel> userBasket;
   List<dynamic> userListOfOrders;
-  bool userLoggedIn;
+  // bool userLoggedIn;
   bool isAdmin;
 
   UserModel({
@@ -22,7 +22,7 @@ class UserModel {
     required this.userPassword,
     required this.userBasket,
     required this.userListOfOrders,
-    required this.userLoggedIn,
+    // required this.userLoggedIn,
     required this.isAdmin,
   });
 
@@ -33,7 +33,7 @@ class UserModel {
     String? userPassword,
     List<MealModel>? userBasket,
     List<dynamic>? userListOfOrders,
-    bool? userLoggedIn,
+    // bool? userLoggedIn,
     bool? isAdmin,
   }) =>
       UserModel(
@@ -43,7 +43,7 @@ class UserModel {
         userPassword: userPassword ?? this.userPassword,
         userBasket: userBasket ?? this.userBasket,
         userListOfOrders: userListOfOrders ?? this.userListOfOrders,
-        userLoggedIn: userLoggedIn ?? this.userLoggedIn,
+        // userLoggedIn: userLoggedIn ?? this.userLoggedIn,
         isAdmin: isAdmin ?? this.isAdmin,
       );
 
@@ -58,7 +58,7 @@ class UserModel {
     userPassword: json["userPassword"],
     userBasket: List<MealModel>.from(json["userBasket"].map((x) => x)),
     userListOfOrders: List<dynamic>.from(json["userListOfOrders"].map((x) => x)),
-    userLoggedIn: json["userLoggedIn"],
+    // userLoggedIn: json["userLoggedIn"],
     isAdmin: json["isAdmin"]
   );
 
@@ -69,7 +69,7 @@ class UserModel {
     "userPassword": userPassword,
     "userBasket": List<MealModel>.from(userBasket.map((x) => x)),
     "userListOfOrders": List<dynamic>.from(userListOfOrders.map((x) => x)),
-    "userLoggedIn": userLoggedIn,
+    // "userLoggedIn": userLoggedIn,
     "isAdmin": isAdmin,
   };
 }

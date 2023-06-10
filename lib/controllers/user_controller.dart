@@ -3,6 +3,9 @@ import 'package:meal_orders/models/user_model.dart';
 
 class UserController extends GetxController {
 
+  RxString repeatedPassword = ''.obs;
+  RxBool userLoggedIn = false.obs;
+
   final _user = UserModel(
       userName: '',
       userSurName: '',
@@ -10,7 +13,7 @@ class UserController extends GetxController {
       userPassword: '',
       userBasket: [],
       userListOfOrders: [],
-      userLoggedIn: false,
+      // userLoggedIn: false,
       isAdmin: false
   ).obs;
 
@@ -27,11 +30,18 @@ class UserController extends GetxController {
         userPassword: '',
         userBasket: [],
         userListOfOrders: [],
-        userLoggedIn: false,
+        // userLoggedIn: false,
         isAdmin: false,
     );
     _user(user);
   }
+
+  void updateUserController(UserModel user){
+    _user(user);
+    _user.refresh();
+  }
+
+
   void refreshUserModel(){
     _user.refresh();
   }
