@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/controllers/cart_controller.dart';
+import 'package:meal_orders/controllers/meal_controller.dart';
 import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/main_category_model.dart';
 // import 'package:meal_orders/pages/admin_panel_page.dart';
@@ -19,6 +21,7 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     UserController _user = Get.put(UserController());
+    CartController cartController = Get.put(CartController());
 
     return ResponsiveScaledBox(
       width: 360,

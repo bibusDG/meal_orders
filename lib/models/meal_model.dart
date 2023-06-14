@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:meal_orders/models/main_category_model.dart';
 
 class MealModel extends MainCategoryModel{
+  int productCounter;
   String unitMeasure;
   String mealName;
   String mealPicture;
@@ -19,6 +20,7 @@ class MealModel extends MainCategoryModel{
   MealModel({
     required super.categoryName,
     required super.categoryPicture,
+    required this.productCounter,
     required this.unitMeasure,
     required this.mealName,
     required this.mealPicture,
@@ -33,6 +35,7 @@ class MealModel extends MainCategoryModel{
   MealModel copyWith({
     String? categoryName,
     String? categoryPicture,
+    int? productCounter,
     String? unitMeasure,
     String? mealName,
     String? mealPicture,
@@ -45,6 +48,7 @@ class MealModel extends MainCategoryModel{
       MealModel(
         categoryName: categoryName ?? this.categoryName,
         categoryPicture: categoryPicture ?? this.categoryPicture,
+        productCounter: productCounter ?? this.productCounter,
         unitMeasure: unitMeasure ?? this.unitMeasure,
         mealName: mealName ?? this.mealName,
         mealPicture: mealPicture ?? this.mealPicture,
@@ -63,6 +67,7 @@ class MealModel extends MainCategoryModel{
   factory MealModel.fromJson(Map<String, dynamic> json) => MealModel(
     categoryName: json['categoryName'],
     categoryPicture: json['categoryPicture'],
+    productCounter: json['productCounter'],
     unitMeasure: json['unitMeasure'],
     mealName: json["mealName"],
     mealPicture: json["mealPicture"],
@@ -77,6 +82,7 @@ class MealModel extends MainCategoryModel{
   Map<String, dynamic> toJson() => {
     "categoryName": categoryName,
     "categoryPicture": categoryPicture,
+    "productCounter": productCounter,
     "unitMeasure":unitMeasure,
     "mealName": mealName,
     "mealPicture": mealPicture,

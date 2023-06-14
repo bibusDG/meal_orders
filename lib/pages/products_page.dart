@@ -57,7 +57,7 @@ class ProductsPage extends StatelessWidget {
                               onPressed: (){},
                               icon: const Icon(Icons.edit))
                         ],),
-                      enabled: _user.user.isAdmin == true ? true : false,
+                      enabled: _user.user.isAdmin == true && _user.userLoggedIn.value == true ? true : false,
                       child: GestureDetector(
                         onTap: (){
                           Get.to(()=>const DetailedProductPage(), arguments: mealModel);

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/controllers/cart_controller.dart';
 import 'package:meal_orders/controllers/meal_controller.dart';
 import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/meal_model.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
+import 'package:meal_orders/pages/cart_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class DetailedProductPage extends StatelessWidget {
@@ -13,8 +15,9 @@ class DetailedProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     MealController mealController = Get.put(MealController());
+    CartController _cartItems = Get.find();
     UserController _user = Get.find();
-    MealModel _product = Get.arguments;
+    MealModel  _product = Get.arguments;
 
     return ResponsiveScaledBox(
       width: 360,
@@ -157,11 +160,23 @@ class DetailedProductPage extends StatelessWidget {
                                       icon: const Icon(Icons.shopping_cart_outlined, size: 30,),
                                       color: Colors.black,
                                       onPressed: () {
-                                        _user.userLoggedIn.value == false ?
-                                            Get.defaultDialog(
+                                        if(_user.userLoggedIn.value == false){
+                                          Get.defaultDialog(
                                               title: 'Uwaga',
                                               content: Text('Aby dodać produkty do koszyka musisz być zalogowany')
-                                            ): null;
+                                          );
+                                        }else if(_user.userLoggedIn.value == true && _cartItems.itemList.contains(_product.mealName)){
+                                          Get.defaultDialog(
+                                              title: 'UWaga',
+                                              content: Text('Produkt znajduje się juz w koszyku')
+                                          );
+                                        }else{
+                                          _cartItems.itemList.add(_product.mealName);
+                                          _product.productCounter =1;
+                                          _cartItems.totalPrice.value += int.parse(_product.mealPrice);
+                                          _user.user.userBasket.add(_product);
+                                          _user.refreshUserModel();
+                                        }
                                       },
                                     ),
                                   ),

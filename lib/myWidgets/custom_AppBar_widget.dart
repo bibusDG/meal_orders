@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/pages/admin_panel_page.dart';
+import 'package:meal_orders/pages/cart_page.dart';
 import 'package:meal_orders/pages/start_page.dart';
 import '../controllers/user_controller.dart';
 import '../pages/account_page.dart';
@@ -11,30 +13,31 @@ class CustomAppBarWidget extends StatelessWidget {
     Key? key,
     required UserController user,
     required this.appBarText,
-  }) : _user = user, super(key: key);
+  })
+      : _user = user,
+        super(key: key);
 
   final UserController _user;
   final String appBarText;
 
   @override
   Widget build(BuildContext context) {
-
     return AppBar(
       actions: [
-        IconButton(onPressed: (){
-          showCupertinoModalPopup(context: context, builder: (_){
+        IconButton(onPressed: () {
+          showCupertinoModalPopup(context: context, builder: (_) {
             return _user.userLoggedIn.value == false ?
             CupertinoActionSheet(
               title: const Text('Wybierz opcję'),
               actions:
               [
-                CupertinoActionSheetAction(onPressed: (){
+                CupertinoActionSheetAction(onPressed: () {
                   Get.back();
-                  Get.to(()=> const AccountPage());
+                  Get.to(() => const AccountPage());
                 }, child: const Text('Zaloguj się')),
-                CupertinoActionSheetAction(onPressed: (){
+                CupertinoActionSheetAction(onPressed: () {
                   Get.back();
-                  Get.to(()=> const RegistrationPage());
+                  Get.to(() => const RegistrationPage());
                 }, child: const Text('Zarejestruj się')),
               ],
             ) :
@@ -43,27 +46,50 @@ class CustomAppBarWidget extends StatelessWidget {
               title: const Text('Wybierz opcję'),
               actions:
               [
-                CupertinoActionSheetAction(onPressed: (){}, child: Text('Wyloguj się')),
-                CupertinoActionSheetAction(onPressed: (){}, child: Text('Zmień swój login')),
-                CupertinoActionSheetAction(onPressed: (){}, child: Text('Panel administratora')),
+                CupertinoActionSheetAction(onPressed: () {
+                  _user.userLoggedIn.value = false;
+                  Get.offAll(() => const StartPage());
+                }, child: Text('Wyloguj się')),
+                CupertinoActionSheetAction(onPressed: () {}, child: Text('Zmień swój login')),
+                CupertinoActionSheetAction(onPressed: () {
+                  Get.back();
+                  Get.to(() => const AdminPanelPage());
+                }, child: Text('Panel administratora')),
               ],
-            ):
+            ) :
             CupertinoActionSheet(
               title: const Text('Wybierz opcję'),
               actions:
               [
-                CupertinoActionSheetAction(onPressed: (){
+                CupertinoActionSheetAction(onPressed: () {
                   _user.userLoggedIn.value = false;
-                  Get.offAll(()=>const StartPage());
+                  Get.offAll(() => const StartPage());
                 }, child: const Text('Wyloguj się')),
-                CupertinoActionSheetAction(onPressed: (){}, child: const Text('Zmień swój login')),
+                CupertinoActionSheetAction(onPressed: () {}, child: const Text('Zmień swój login')),
               ],
             );
           });
           // Get.to(()=>const AccountPage());
         }, icon: const Icon(Icons.account_circle_outlined)),
         _user.userLoggedIn.value == true ?
-            IconButton(onPressed: (){}, icon: const Icon(Icons.shopping_cart_outlined)) : const SizedBox(),
+        IconButton(onPressed: () {
+          Get.to(()=> const CartPage());
+        },
+          icon: Obx(() {
+            return Stack(
+              alignment: Alignment.center,
+                children: [
+                  const Icon(Icons.shopping_cart_outlined),
+                  Align(
+                    alignment: const Alignment(1, -1.4),
+                    child: Text(_user.user.userBasket.length.toString()),
+                  ),
+                ]
+            );
+          }),
+        )
+            : const SizedBox(),
+        const SizedBox(width: 10.0,)
       ],
       centerTitle: true,
       title: Text(appBarText),

@@ -66,7 +66,7 @@ class AddMealPage extends StatelessWidget {
                     return IconButton(onPressed: addProductConditions() == true ? () async {
                       try{
                         await ProductFirebaseServices().addProduct(mealController.newMeal);
-                        Get.to(()=>const ProductsPage(), arguments: mealController.newMeal.categoryName);
+                        Get.to(()=>const ProductsPage(), arguments: mealController.newMeal);
                       }catch(error){print(error);}
                     } : null, icon: const Icon(Icons.add));
                   }),
