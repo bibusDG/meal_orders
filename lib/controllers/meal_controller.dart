@@ -10,6 +10,7 @@ class MealController extends GetxController{
   RxString chosenVariant = 'vegan'.obs;
 
   final _newMeal = MealModel(
+      chosenVariant: '',
       productCounter: 0,
       unitMeasure: '',
       mealName: '',
@@ -27,6 +28,7 @@ class MealController extends GetxController{
   void onInit(){
     super.onInit();
     var newMeal =  MealModel(
+        chosenVariant: 'vegan',
         productCounter: 0,
         unitMeasure: 'sztuka',
         mealName: '',

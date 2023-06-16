@@ -13,6 +13,7 @@ class MealModel extends MainCategoryModel{
   String mealPicture;
   String mealDescription;
   String mealPrice;
+  String chosenVariant;
   bool mealAvailability;
   List<dynamic> mealContent;
   List<dynamic> mealVariants;
@@ -20,6 +21,7 @@ class MealModel extends MainCategoryModel{
   MealModel({
     required super.categoryName,
     required super.categoryPicture,
+    required this.chosenVariant,
     required this.productCounter,
     required this.unitMeasure,
     required this.mealName,
@@ -33,6 +35,7 @@ class MealModel extends MainCategoryModel{
 
   @override
   MealModel copyWith({
+    String? chosenVariant,
     String? categoryName,
     String? categoryPicture,
     int? productCounter,
@@ -46,6 +49,7 @@ class MealModel extends MainCategoryModel{
     List<dynamic>? mealVariants,
   }) =>
       MealModel(
+        chosenVariant: chosenVariant ??  this.chosenVariant,
         categoryName: categoryName ?? this.categoryName,
         categoryPicture: categoryPicture ?? this.categoryPicture,
         productCounter: productCounter ?? this.productCounter,
@@ -65,6 +69,7 @@ class MealModel extends MainCategoryModel{
   String toRawJson() => json.encode(toJson());
 
   factory MealModel.fromJson(Map<String, dynamic> json) => MealModel(
+    chosenVariant: json["chosenVariant"],
     categoryName: json['categoryName'],
     categoryPicture: json['categoryPicture'],
     productCounter: json['productCounter'],
@@ -80,6 +85,7 @@ class MealModel extends MainCategoryModel{
 
   @override
   Map<String, dynamic> toJson() => {
+    "chosenVariant": chosenVariant,
     "categoryName": categoryName,
     "categoryPicture": categoryPicture,
     "productCounter": productCounter,

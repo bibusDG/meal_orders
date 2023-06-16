@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'package:meal_orders/controllers/cart_controller.dart';
 import 'package:meal_orders/controllers/meal_controller.dart';
 import 'package:meal_orders/controllers/user_controller.dart';
+import 'package:meal_orders/models/main_category_model.dart';
 import 'package:meal_orders/models/meal_model.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
+import 'package:meal_orders/myWidgets/custom_drawer.dart';
 import 'package:meal_orders/pages/cart_page.dart';
+import 'package:meal_orders/pages/products_page.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class DetailedProductPage extends StatelessWidget {
@@ -17,14 +20,16 @@ class DetailedProductPage extends StatelessWidget {
     MealController mealController = Get.put(MealController());
     CartController _cartItems = Get.find();
     UserController _user = Get.find();
-    MealModel  _product = Get.arguments;
+    MealModel _product = Get.arguments;
+    _product.chosenVariant = mealController.newMeal.chosenVariant;
 
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
+        // drawer: MyCustomDrawer(),
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(70.0),
-            child: CustomAppBarWidget(user: _user, appBarText: _product.mealName,),
+            child: CustomAppBarWidget(user: _user, appBarText: _product.mealName, arguments: _product,),
           ),
           body: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
@@ -101,12 +106,14 @@ class DetailedProductPage extends StatelessWidget {
                                       const SizedBox(width: 10.0,),
                                       GestureDetector(
                                         onTap: () {
-                                            mealController.chosenVariant.value = _product.mealVariants[index];
+                                            mealController.newMeal.chosenVariant = _product.mealVariants[index];
+                                            _product.chosenVariant = mealController.newMeal.chosenVariant;
+                                            mealController.refreshNewMealModel();
                                         },
                                         child: Container(
                                             decoration: BoxDecoration(
                                               border: Border.all(color: Colors.black),
-                                              color: mealController.chosenVariant.value == _product.mealVariants[index] ?
+                                              color: mealController.newMeal.chosenVariant == _product.mealVariants[index] ?
                                               Colors.grey[400] : Colors.white,
                                               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                             ),
@@ -165,17 +172,19 @@ class DetailedProductPage extends StatelessWidget {
                                               title: 'Uwaga',
                                               content: Text('Aby dodać produkty do koszyka musisz być zalogowany')
                                           );
-                                        }else if(_user.userLoggedIn.value == true && _cartItems.itemList.contains(_product.mealName)){
+                                        }else if(_user.userLoggedIn.value == true && _cartItems.itemList.contains(_product.mealName+_product.chosenVariant)){
                                           Get.defaultDialog(
                                               title: 'UWaga',
                                               content: Text('Produkt znajduje się juz w koszyku')
                                           );
                                         }else{
-                                          _cartItems.itemList.add(_product.mealName);
+                                          _cartItems.itemList.add(_product.mealName+_product.chosenVariant);
                                           _product.productCounter =1;
                                           _cartItems.totalPrice.value += int.parse(_product.mealPrice);
                                           _user.user.userBasket.add(_product);
+                                          mealController.newMeal.chosenVariant = 'vegan';
                                           _user.refreshUserModel();
+                                          Get.to(()=>const ProductsPage(), arguments: _product);
                                         }
                                       },
                                     ),

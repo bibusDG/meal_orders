@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:meal_orders/models/main_category_model.dart';
 import 'package:meal_orders/models/meal_model.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
+import 'package:meal_orders/myWidgets/custom_drawer.dart';
 import 'package:meal_orders/services/firebase_services/product_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -22,9 +23,10 @@ class ProductsPage extends StatelessWidget {
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
+        // drawer: MyCustomDrawer(),
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(70.0),
-          child: CustomAppBarWidget(user: _user, appBarText: _category.categoryName,),
+          child: CustomAppBarWidget(user: _user, appBarText: _category.categoryName, arguments: _category,),
         ),
         body: FutureBuilder(
           future: ProductFirebaseServices().fetchProducts(_category.categoryName) ,

@@ -12,6 +12,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import '../models/user_model.dart';
 import '../myWidgets/custom_AppBar_widget.dart';
+import '../myWidgets/custom_drawer.dart';
 import 'account_page.dart';
 
 class StartPage extends StatelessWidget {
@@ -26,6 +27,7 @@ class StartPage extends StatelessWidget {
     return ResponsiveScaledBox(
       width: 360,
       child: Scaffold(
+        // drawer: const MyCustomDrawer(),
        appBar: PreferredSize(
          preferredSize: const Size.fromHeight(70.0),
         child: CustomAppBarWidget(
@@ -84,6 +86,8 @@ class StartPage extends StatelessWidget {
     );
   }
 }
+
+
 
 
 
