@@ -1,12 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:meal_orders/controllers/cart_controller.dart';
+import 'package:meal_orders/controllers/order_controller.dart';
 import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/meal_model.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/myWidgets/custom_drawer.dart';
+import 'package:meal_orders/pages/start_page.dart';
+import 'package:meal_orders/services/firebase_services/order_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class CartPage extends StatelessWidget {
@@ -14,6 +19,8 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final random = Random();
+    OrderController _order = Get.put(OrderController());
     UserController _user = Get.find();
     CartController cartController = Get.find();
 
@@ -124,18 +131,45 @@ class CartPage extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 10.0,),
-                      Text('Całkowity koszt zamówienia: '),
+                      const Text('Całkowity koszt zamówienia: '),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                       Text('${cartController.totalPrice.value.toString()} PLN', style: TextStyle(fontSize: 30.0, color: Colors.tealAccent),),
                         ],
                       ),
-                      SizedBox(height: 10.0,),
+                      const SizedBox(height: 10.0,),
                       CupertinoButton(
                         color: Colors.black,
                           child: Text('Zamów'),
-                          onPressed: (){})
+                          onPressed: (){
+                          var lst = [];
+                          for(var item in _user.user.userBasket){
+                            lst.add(item.toJson());
+                          }
+                          _order.newOrder.articlesList = lst;
+                          _order.newOrder.orderNumber = random.nextInt(90000000) + 10000000;
+                          _order.newOrder.orderDate = DateTime.now().toString();
+                          _order.newOrder.orderTotalPrice = cartController.totalPrice.value;
+                          try {
+                            OrderFirebaseServices().addOrder(_order.newOrder);
+                            Get.snackbar(
+                              "GeeksforGeeks",
+                              "Hello everyone",
+                              icon: Icon(Icons.person, color: Colors.white),
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                            );
+                            _user.user.userBasket = [];
+                            _user.refreshUserModel();
+                            cartController.itemList.value = [];
+                            cartController.totalPrice.value = 0;
+                            // Get.to(()=>const StartPage());
+                          }catch(error){}
+
+
+                          // print(random.nextInt(90000000) + 10000000);
+                          })
                     ],
                   )),
             ],
