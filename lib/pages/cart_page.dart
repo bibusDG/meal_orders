@@ -11,6 +11,7 @@ import 'package:meal_orders/models/meal_model.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/myWidgets/custom_drawer.dart';
 import 'package:meal_orders/pages/start_page.dart';
+import 'package:meal_orders/pages/user_orders_page.dart';
 import 'package:meal_orders/services/firebase_services/order_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -154,20 +155,16 @@ class CartPage extends StatelessWidget {
                           try {
                             OrderFirebaseServices().addOrder(_order.newOrder);
                             Get.snackbar(
-                              "GeeksforGeeks",
-                              "Hello everyone",
+                              "Gratulacje",
+                              "Zamówienie złożone",
                               icon: Icon(Icons.person, color: Colors.white),
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor: Colors.green,
                             );
-                            _user.user.userBasket = [];
-                            _user.refreshUserModel();
-                            cartController.itemList.value = [];
-                            cartController.totalPrice.value = 0;
-                            // Get.to(()=>const StartPage());
                           }catch(error){}
-
-
+                          resetCart(user: _user, cartController: cartController);
+                          // Get.to(()=> const UserOrdersPage());
+                          Get.offAll(()=> const StartPage());
                           // print(random.nextInt(90000000) + 10000000);
                           })
                     ],
@@ -178,4 +175,12 @@ class CartPage extends StatelessWidget {
       ),
     );
   }
+
+  void resetCart({required UserController user, required CartController cartController}){
+    user.user.userBasket = [];
+    user.refreshUserModel();
+    cartController.itemList.value = [];
+    cartController.totalPrice.value = 0;
+  }
+
 }

@@ -184,6 +184,7 @@ class DetailedProductPage extends StatelessWidget {
                                           _user.user.userBasket.add(_product);
                                           mealController.newMeal.chosenVariant = 'vegan';
                                           _user.refreshUserModel();
+                                          // Get.back();
                                           Get.to(()=>const ProductsPage(), arguments: _product);
                                         }
                                       },

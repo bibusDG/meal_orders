@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/pages/admin_panel_page.dart';
 import 'package:meal_orders/pages/cart_page.dart';
-import 'package:meal_orders/pages/detailed_product_page.dart';
-import 'package:meal_orders/pages/products_page.dart';
 import 'package:meal_orders/pages/start_page.dart';
+import 'package:meal_orders/pages/user_orders_page.dart';
 import '../controllers/user_controller.dart';
 import '../pages/account_page.dart';
 import '../pages/registration_page.dart';
@@ -32,7 +31,7 @@ class CustomAppBarWidget extends StatelessWidget {
         onTap: (){
           Get.back();
         },
-          child: Icon(Icons.arrow_back_ios)) : SizedBox(),
+          child: const Icon(Icons.arrow_back_ios)) : const SizedBox(),
       actions: [
         IconButton(onPressed: () {
           showCupertinoModalPopup(context: context, builder: (_) {
@@ -59,12 +58,12 @@ class CustomAppBarWidget extends StatelessWidget {
                 CupertinoActionSheetAction(onPressed: () {
                   _user.userLoggedIn.value = false;
                   Get.offAll(() => const StartPage());
-                }, child: Text('Wyloguj się')),
-                CupertinoActionSheetAction(onPressed: () {}, child: Text('Zmień swój login')),
+                }, child: const Text('Wyloguj się')),
+                CupertinoActionSheetAction(onPressed: () {}, child: const Text('Zmień swój login')),
                 CupertinoActionSheetAction(onPressed: () {
                   Get.back();
                   Get.to(() => const AdminPanelPage());
-                }, child: Text('Panel administratora')),
+                }, child: const Text('Panel administratora')),
               ],
             ) :
             CupertinoActionSheet(
@@ -75,7 +74,11 @@ class CustomAppBarWidget extends StatelessWidget {
                   _user.userLoggedIn.value = false;
                   Get.offAll(() => const StartPage());
                 }, child: const Text('Wyloguj się')),
-                CupertinoActionSheetAction(onPressed: () {}, child: const Text('Zmień swój login')),
+                // CupertinoActionSheetAction(onPressed: () {}, child: const Text('Zmień swój login')),
+                CupertinoActionSheetAction(onPressed: (){
+                  Get.back();
+                  Get.to(()=> const UserOrdersPage(), arguments: arguments);
+                }, child: const Text('Moje zamówienia'))
               ],
             );
           });
@@ -83,12 +86,7 @@ class CustomAppBarWidget extends StatelessWidget {
         }, icon: const Icon(Icons.account_circle_outlined)),
         _user.userLoggedIn.value == true ?
         IconButton(onPressed: () {
-          if(Get.currentRoute == '/ProductsPage'){
-            Get.to(()=> const CartPage(), arguments: arguments);
-          }else if(Get.currentRoute == '/DetailedProductPage'){
-            Get.to(()=> const CartPage(), arguments: arguments);
-          }
-          Get.to(()=> const CartPage());
+          Get.to(()=> const CartPage(), arguments: arguments);
         },
           icon: Obx(() {
             return Stack(
