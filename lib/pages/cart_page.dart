@@ -1,17 +1,13 @@
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:meal_orders/controllers/cart_controller.dart';
 import 'package:meal_orders/controllers/order_controller.dart';
 import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/meal_model.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
-import 'package:meal_orders/myWidgets/custom_drawer.dart';
 import 'package:meal_orders/pages/start_page.dart';
-import 'package:meal_orders/pages/user_orders_page.dart';
 import 'package:meal_orders/services/firebase_services/order_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -30,7 +26,7 @@ class CartPage extends StatelessWidget {
       child: Scaffold(
         // drawer: MyCustomDrawer(),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(70.0),
+          preferredSize: const Size.fromHeight(70.0),
           child: CustomAppBarWidget(
             user: _user,
             appBarText: 'Koszyk',
@@ -71,7 +67,7 @@ class CartPage extends StatelessWidget {
                                           children: [
                                             Text(_productList[index].mealName.capitalize!),
                                             const SizedBox(height: 10.0,),
-                                            Text(_productList[index].chosenVariant, style: TextStyle(color: Colors.blue),),
+                                            Text(_productList[index].chosenVariant, style: const TextStyle(color: Colors.blue),),
                                           ],
                                         ),
                                         Column(
@@ -111,9 +107,9 @@ class CartPage extends StatelessWidget {
                                 ),
                               ),
                               Align(
-                                  alignment: Alignment(1.02,-1.2),
+                                  alignment: const Alignment(1.02,-1.2),
                                   child: GestureDetector(
-                                      child: Icon(Icons.delete),
+                                      child: const Icon(Icons.delete),
                                     onTap: (){
                                         cartController.itemList.remove(_productList[index].mealName+_productList[index].chosenVariant);
                                         _user.user.userBasket.remove(_productList[index]);
@@ -136,14 +132,13 @@ class CartPage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                      Text('${cartController.totalPrice.value.toString()} PLN', style: TextStyle(fontSize: 30.0, color: Colors.tealAccent),),
+                      Text('${cartController.totalPrice.value.toString()} PLN', style: const TextStyle(fontSize: 30.0, color: Colors.tealAccent),),
                         ],
                       ),
                       const SizedBox(height: 10.0,),
                       CupertinoButton(
                         color: Colors.black,
-                          child: Text('Zamów'),
-                          onPressed: (){
+                          onPressed: _user.user.userBasket.isEmpty ? null : (){
                           var lst = [];
                           for(var item in _user.user.userBasket){
                             lst.add(item.toJson());
@@ -157,7 +152,7 @@ class CartPage extends StatelessWidget {
                             Get.snackbar(
                               "Gratulacje",
                               "Zamówienie złożone",
-                              icon: Icon(Icons.person, color: Colors.white),
+                              icon: const Icon(Icons.person, color: Colors.white),
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor: Colors.green,
                             );
@@ -166,7 +161,8 @@ class CartPage extends StatelessWidget {
                           // Get.to(()=> const UserOrdersPage());
                           Get.offAll(()=> const StartPage());
                           // print(random.nextInt(90000000) + 10000000);
-                          })
+                          },
+                          child: const Text('Zamów'))
                     ],
                   )),
             ],

@@ -5,6 +5,8 @@ import 'package:meal_orders/models/order_model.dart';
 
 class OrderController extends GetxController{
 
+  RxInt bottomBarIndex = 3.obs;
+
   final _order = OrderModel(
       orderNumber: 0,
       orderDate: '',

@@ -67,7 +67,6 @@ class ProductsPage extends StatelessWidget {
                         child: Card(
                           margin: const EdgeInsets.only(top: 20.0, left: 30, right: 30.0),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                          color: Colors.white,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -81,8 +80,8 @@ class ProductsPage extends StatelessWidget {
                                 // color: Colors.black,
                               ),
                               // SizedBox(width: 5.0,),
-                              Center(child: Text(mealModel.mealName, style: const TextStyle(color: Colors.black),)),
-                              SizedBox(width: 20.0,)
+                              Center(child: Text(mealModel.mealName,)),
+                              const SizedBox(width: 20.0,)
                             ],
                           ),
                         ),

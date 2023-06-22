@@ -15,4 +15,37 @@ class OrderFirebaseServices {
     catch(error){print(error);}
   }
 
+  fetchOrdersFromUser(userLogin) async{
+    try{
+      var userOrders = await FirebaseFirestore.instance
+          .collection('Companies')
+          .doc('martaSudol')
+          .collection('orders')
+          .where('userLogin', isEqualTo: userLogin).get();
+      return userOrders;
+    }catch(error){}
+
+  }
+
+  streamChosenUserOrders({userLogin, sortText}){
+    try{
+      var chosenOrders = FirebaseFirestore.instance.collection('Companies')
+          .doc('martaSudol')
+          .collection('orders')
+          .where('userLogin', isEqualTo: userLogin)
+          .where('orderStatus', isEqualTo: sortText).snapshots();
+      return chosenOrders;
+    }catch(error){}
+  }
+
+  streamAllUserOrders({userLogin}){
+    try{
+      var allOrders = FirebaseFirestore.instance.collection('Companies')
+          .doc('martaSudol')
+          .collection('orders')
+          .where('userLogin', isEqualTo: userLogin).snapshots();
+      return allOrders;
+    }catch(error){}
+  }
+
 }
