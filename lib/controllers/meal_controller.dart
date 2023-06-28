@@ -8,6 +8,7 @@ class MealController extends GetxController{
   RxBool veganCheckBox = false.obs;
   RxBool meatCheckBox = false.obs;
   RxString chosenVariant = 'vegan'.obs;
+  RxBool editingMeal = false.obs;
 
   final _newMeal = MealModel(
       chosenVariant: '',

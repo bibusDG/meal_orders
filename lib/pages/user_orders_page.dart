@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:meal_orders/controllers/order_controller.dart';
 import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/models/meal_model.dart';
@@ -18,6 +15,7 @@ class UserOrdersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     UserController _user = Get.find();
     OrderController orderController = Get.put(OrderController());
+    Map pictures = {};
 
     return ResponsiveScaledBox(
         width: 360,
@@ -54,20 +52,33 @@ class UserOrdersPage extends StatelessWidget {
                   if (snapshot.hasData) {
                     if (snapshot.data.docs.length > 0) {
                       return ListView.builder(
-                          itemExtent: 150,
+                          itemExtent: 180,
                           itemCount: snapshot.data.docs.length,
                           itemBuilder: (BuildContext context, int index) {
                             OrderModel userOrder = OrderModel.fromJson(Map<String, dynamic>.from(snapshot.data.docs[index].data()));
+                            List items = [];
+
+                            ///setting gallery of meal pictures
+
+                            for(var item in userOrder.articlesList){
+                              items.add(item['mealPicture']);
+                            }
+                            pictures[index] = items;
+                            items = [];
+
+                            ///
                             return GestureDetector(
                               onTap: () {
                                 Get.defaultDialog(
-                                    title: 'Szczegóły zamówienia',
+                                    titleStyle: const TextStyle(color: Colors.tealAccent),
+                                    title: userOrder.orderNumber.toString(),
                                     content: Column(
                                       children: [
+                                        const SizedBox(height: 20.0,),
                                         const Text('Zamówione produkty:'),
                                         const SizedBox(height: 20.0,),
                                         SizedBox(
-                                          height: 400,
+                                          height: 250,
                                           width: 300,
                                           child: ListView.builder(
                                               itemExtent: 75,
@@ -78,9 +89,9 @@ class UserOrdersPage extends StatelessWidget {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Text(product.productCounter.toString(), style: TextStyle(fontSize: 30.0),),
-                                                        Text(' X '),
-                                                        Text(product.mealName, style: TextStyle(fontSize: 25.0),),
+                                                        Text(product.productCounter.toString(), style: const TextStyle(fontSize: 30.0),),
+                                                        const Text(' X '),
+                                                        Text(product.mealName, style: const TextStyle(fontSize: 25.0),),
                                                       ],
                                                     ),
                                                     Text('wariant: ${product.chosenVariant}')
@@ -100,21 +111,18 @@ class UserOrdersPage extends StatelessWidget {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                 // color: Colors.white,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    // SizedBox(width: 10.0,),
+                                    const SizedBox(height: 5.0,),
+                                    Text(pictures[index].toString()),
+
+                                    ///TODO picture gallery of ordered meals (carousel, card swiper)///
+
+                                    const SizedBox(height: 110.0,),
                                     // SizedBox(width: 5.0,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Text('nr. '),
-                                        Text(userOrder.orderNumber.toString(), style: const TextStyle(color: Colors.tealAccent, fontSize: 30),),
-                                      ],
-                                    ),
-                                    Text(userOrder.orderDate.substring(0, 16),),
                                     Center(child: Text(userOrder.orderStatus, style: TextStyle(
                                       color: userOrder.orderStatus == "Do odbioru" ? Colors.lightGreenAccent : Colors.white,
-                                        fontSize: 18),)),
+                                        fontSize: 15),)),
                                     const SizedBox(width: 20.0,)
                                   ],
                                 ),
@@ -123,10 +131,10 @@ class UserOrdersPage extends StatelessWidget {
                           });
                     }
                     else {
-                      return Center(child: Text('Brak zamówień w danej kategorii'));
+                      return const Center(child: Text('Brak zamówień w danej kategorii'));
                     }
                   } else {
-                    return Center(child: CircularProgressIndicator(),);
+                    return const Center(child: CircularProgressIndicator(),);
                   }
                 }
             ),

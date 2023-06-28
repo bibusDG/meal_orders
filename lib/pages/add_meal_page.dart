@@ -50,7 +50,7 @@ class AddMealPage extends StatelessWidget {
             preferredSize: const Size.fromHeight(70.0),
             child: CustomAppBarWidget(
               user: _user,
-              appBarText: 'Dodaj produkt',
+              appBarText: mealController.editingMeal.value == false ? 'Dodaj produkt' : 'Edytuj produkt',
             ),
           ),
           bottomNavigationBar: ClipRRect(
