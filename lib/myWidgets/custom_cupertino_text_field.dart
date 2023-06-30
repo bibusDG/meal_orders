@@ -24,10 +24,21 @@ class CustomCupertinoTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     TextInputType _keyboardType = keyboardType;
     TextAlignVertical _textAlignment = textAlignment;
+
+    TextEditingController _textController = TextEditingController();
+    if(key == const Key('MealName')){
+      _textController.text = controller.newMeal.mealName;
+    }else if(key == const Key('MealPrice')){
+      _textController.text = controller.newMeal.mealPrice;
+    }else if(key == const Key('MealDescription')){
+      _textController.text = controller.newMeal.mealDescription;
+    }
+
     return SizedBox(
       height: 50,
       width: 300,
       child: CupertinoTextField(
+        controller: _textController,
         obscuringCharacter: '*',
         obscureText: obscureText,
         keyboardType: _keyboardType,
@@ -41,37 +52,37 @@ class CustomCupertinoTextField extends StatelessWidget {
         onChanged: (text) {
           if(key == const Key('CategoryName')){
             controller.newCategory.categoryName = text;
-            controller.refreshNewCategoryModel();
+            // controller.refreshNewCategoryModel();
           }else if(key == const Key('MealName')){
             controller.newMeal.mealName = text;
-            controller.refreshNewMealModel();
+            // controller.refreshNewMealModel();
           }else if(key == const Key('MealPrice')){
             controller.newMeal.mealPrice = text;
-            controller.refreshNewMealModel();
+            // controller.refreshNewMealModel();
           }else if(key == const Key('MealDescription')){
             controller.newMeal.mealDescription = text;
-            controller.refreshNewMealModel();
+            // controller.refreshNewMealModel();
           }else if(key == const Key('registrationUserName')){
             controller.user.userName = text;
-            controller.refreshUserModel;
+            // controller.refreshUserModel;
           }else if(key == const Key('registrationUserSurname')){
             controller.user.userSurName = text;
-            controller.refreshUserModel;
+            // controller.refreshUserModel;
           }else if(key == const Key('registrationLogin')){
             controller.user.userLogin = text;
-            controller.refreshUserModel;
+            // controller.refreshUserModel;
           }else if(key == const Key('registrationPassword')){
             controller.user.userPassword = text;
-            controller.refreshUserModel;
+            // controller.refreshUserModel;
           }else if(key == const Key('registrationRepeatPassword')){
             controller.repeatedPassword.value = text;
             // controller.refreshUserModel;
           }else if(key == const Key('accountLogin')){
             controller.user.userLogin = text;
-            controller.refreshUserModel;
+            // controller.refreshUserModel;
           }else if(key == const Key('accountPassword')){
             controller.user.userPassword = text;
-            controller.refreshUserModel;
+            // controller.refreshUserModel;
           }
 
         },

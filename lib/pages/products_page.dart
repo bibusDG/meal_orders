@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/controllers/meal_controller.dart';
 import 'package:meal_orders/models/main_category_model.dart';
 import 'package:meal_orders/models/meal_model.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/myWidgets/custom_drawer.dart';
+import 'package:meal_orders/pages/add_meal_page.dart';
 import 'package:meal_orders/services/firebase_services/product_firebase_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -19,6 +21,7 @@ class ProductsPage extends StatelessWidget {
 
     MainCategoryModel _category = Get.arguments;
     UserController _user = Get.find();
+    MealController mealController = Get.put(MealController());
 
     return ResponsiveScaledBox(
       width: 360,
@@ -56,7 +59,12 @@ class ProductsPage extends StatelessWidget {
                           IconButton(
                             iconSize: 30.0,
                               color: Colors.white,
-                              onPressed: (){},
+                              onPressed: (){
+                              mealController.editingMeal.value = true;
+                              mealController.updateMeal(mealModel);
+                              var mealDocumentID = snapshot.data.docs[index].id;
+                              Get.to(()=>const AddMealPage(), arguments: mealDocumentID);
+                              },
                               icon: const Icon(Icons.edit))
                         ],),
                       enabled: _user.user.isAdmin == true && _user.userLoggedIn.value == true ? true : false,

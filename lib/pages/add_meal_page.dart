@@ -19,8 +19,24 @@ class AddMealPage extends StatelessWidget {
 
     UserController _user = Get.find();
     MealController mealController = Get.put(MealController());
+    var mealDocumentID = Get.arguments;
+
     const double _itemExtent = 32.0;
     List _mainCategoryList = [];
+
+    /// Setting values for meal variants (check boxes) while editing the meal
+    if(mealController.editingMeal.value == true){
+      if(mealController.newMeal.mealVariants.contains('vegan')){
+        mealController.veganCheckBox.value = true;
+      }
+      if(mealController.newMeal.mealVariants.contains('mięso')){
+        mealController.meatCheckBox.value = true;
+      }
+    }else{
+      mealController.newMeal.mealVariants = [];
+    }
+    ///
+
 
     getCategoryList() async {
       _mainCategoryList = [];
@@ -63,12 +79,20 @@ class AddMealPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Obx(() {
-                    return IconButton(onPressed: addProductConditions() == true ? () async {
-                      try{
-                        await ProductFirebaseServices().addProduct(mealController.newMeal);
-                        Get.to(()=>const ProductsPage(), arguments: mealController.newMeal);
-                      }catch(error){print(error);}
-                    } : null, icon: const Icon(Icons.add));
+                    if(mealController.editingMeal.value == false){
+                      return IconButton(onPressed: addProductConditions() == true ? () async {
+                        try{
+                          await ProductFirebaseServices().addProduct(mealController.newMeal);
+                          Get.to(()=>const ProductsPage(), arguments: mealController.newMeal);
+                        }catch(error){print(error);}
+                      } : null, icon: const Icon(Icons.add));
+                    }else{
+                      return IconButton(onPressed: () async{
+                        try{
+                          await ProductFirebaseServices().updateProduct(newMeal: mealController.newMeal, mealDocumentID: mealDocumentID);
+                        }catch(error){}
+                      }, icon: const Icon(Icons.refresh));
+                    }
                   }),
                 ],
               ),
@@ -232,7 +256,8 @@ class AddMealPage extends StatelessWidget {
                           child: CheckboxListTile(
                               activeColor: Colors.black,
                               title: const Text('Vege'),
-                              value: mealController.veganCheckBox.value, onChanged: (newValue) {
+                              value: mealController.veganCheckBox.value,
+                              onChanged: (newValue) {
                             mealController.veganCheckBox.value = newValue!;
                             if (mealController.veganCheckBox.value == false && mealController.newMeal.mealVariants.contains('vegan')) {
                               mealController.newMeal.mealVariants.remove('vegan');
@@ -275,12 +300,12 @@ class AddMealPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 30.0,),
-                    const Text('Dodaj zdjęcie produktu'),
+                    mealController.editingMeal.value == false ? const Text('Dodaj zdjęcie produktu') : const Text('Zmień zdjęcie produktu'),
                     const SizedBox(height: 15.0,),
                     CupertinoButton(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.black,
-                        child: const Text('Dodaj'), onPressed: () {
+                        child: mealController.editingMeal.value == false ? const Text('Dodaj') : const Text('Zmień'), onPressed: () {
                       mealController.newMeal.mealPicture = 'picture';
                       mealController.refreshNewMealModel();
                     }),
@@ -295,6 +320,8 @@ class AddMealPage extends StatelessWidget {
       ),
     );
   }
+
+  ///TODO add possibility to choose photo from gallery for each meal
 
   addProductConditions() {
     MealController mealController = Get.find();

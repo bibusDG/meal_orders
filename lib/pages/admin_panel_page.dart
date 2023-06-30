@@ -47,6 +47,7 @@ class AdminPanelPage extends StatelessWidget {
                 children: [
                   IconButton(onPressed: (){
                     mealController.editingMeal.value = false;
+                    mealController.onInit();
                     Get.to(()=>const AddMealPage());
                   }, icon: const Icon(Icons.add, color: Colors.lightGreen),),
                   const SizedBox(height: 10.0,),

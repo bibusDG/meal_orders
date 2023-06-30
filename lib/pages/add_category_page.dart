@@ -79,5 +79,5 @@ class AddCategoryPage extends StatelessWidget {
     );
   }
 }
-
+///TODO add possibility to choose photo from library (main category photo)
 

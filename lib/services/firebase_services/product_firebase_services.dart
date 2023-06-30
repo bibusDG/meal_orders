@@ -20,4 +20,14 @@ class ProductFirebaseServices{
     return products;
   }
 
+  updateProduct({mealDocumentID, required MealModel newMeal}) {
+    try{
+      FirebaseFirestore.instance
+          .collection('Companies')
+          .doc('martaSudol')
+          .collection('product')
+          .doc(mealDocumentID).update(newMeal.toJson());
+    }catch(error){}
+  }
+
 }

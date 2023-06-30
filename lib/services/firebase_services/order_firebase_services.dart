@@ -47,4 +47,14 @@ class OrderFirebaseServices {
     }catch(error){}
   }
 
+  streamAllOrders(){
+    try{
+      var streamAllOrders = FirebaseFirestore.instance
+          .collection('Companies')
+          .doc('martaSudol')
+          .collection('orders').snapshots();
+      return streamAllOrders;
+    }catch(error){}
+  }
+
 }
