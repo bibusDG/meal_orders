@@ -26,7 +26,9 @@ class CustomCupertinoTextField extends StatelessWidget {
     TextAlignVertical _textAlignment = textAlignment;
 
     TextEditingController _textController = TextEditingController();
-    if(key == const Key('MealName')){
+    if(key == const Key('CategoryName')){
+      _textController.text = controller.newCategory.categoryName;
+    }else if(key == const Key('MealName')){
       _textController.text = controller.newMeal.mealName;
     }else if(key == const Key('MealPrice')){
       _textController.text = controller.newMeal.mealPrice;

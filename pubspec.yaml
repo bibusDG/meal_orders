@@ -41,6 +41,7 @@ dependencies:
   firebase_core:
   cloud_firestore:
   flutter_slidable:
+  image_picker:
 
 dev_dependencies:
   flutter_test:

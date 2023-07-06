@@ -6,6 +6,7 @@ import 'package:meal_orders/controllers/user_controller.dart';
 import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/pages/start_page.dart';
 import 'package:meal_orders/services/firebase_services/main_category_firebase_services.dart';
+import 'package:meal_orders/services/photo_services/photo_from_gallery_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../myWidgets/custom_cupertino_text_field.dart';
@@ -52,22 +53,27 @@ class AddCategoryPage extends StatelessWidget {
                   const SizedBox(height: 50.0,),
                   const Text('Dodaj zdjęcie kategorii'),
                   const SizedBox(height: 15.0,),
-                  IconButton(onPressed: () {
-                    mainCategoryController.newCategory.categoryPicture = 'dd';
+                  IconButton(onPressed: () async {
+                    final pictureOfMainCategory = await PhotoFromGalleryServices().takeAPhotoFromGallery();
+                    mainCategoryController.newCategory.categoryPicture = pictureOfMainCategory;
                     mainCategoryController.refreshNewCategoryModel();
                   }, icon: const Icon(Icons.photo_library_outlined, size: 50.0,), padding: const EdgeInsets.all(0.0),),
                   const SizedBox(height: 40.0,),
                   mainCategoryController.newCategory.categoryName != '' && mainCategoryController.newCategory.categoryPicture != ''?
                   Column(
                     children: [
-                      CupertinoButton(child: const Text('Dodaj'), onPressed: () {
+                      CupertinoButton(child: const Text('Dodaj'), onPressed: () async {
                         try{
-                          MainCategoryFirebaseServices().addNewMainCategory(mainCategoryController.newCategory);
+                          await MainCategoryFirebaseServices().addNewMainCategory(mainCategoryController.newCategory);
                         }
                         catch(error){};
-                        Get.to(()=>const StartPage(), transition: Transition.leftToRight);
+                        MainCategoryController().onInit();
+                        Get.offAll(()=>const StartPage(), transition: Transition.leftToRight);
                       }),
-                      CupertinoButton(child: const Text('Anuluj'), onPressed: () {})
+                      CupertinoButton(child: const Text('Anuluj'), onPressed: () {
+                        MainCategoryController().onInit();
+                        Get.back();
+                      })
                     ],
                   ) : const SizedBox(),
                 ],
@@ -79,5 +85,4 @@ class AddCategoryPage extends StatelessWidget {
     );
   }
 }
-///TODO add possibility to choose photo from library (main category photo)
 

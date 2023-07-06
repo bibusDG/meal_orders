@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,6 +50,8 @@ class StartPage extends StatelessWidget {
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (BuildContext context, int index){
                   MainCategoryModel mainCategory = MainCategoryModel.fromJson(Map<String, dynamic>.from(snapshot.data.docs[index].data()));
+                  final mainCategoryPicture = const Base64Decoder().convert(mainCategory.categoryPicture);
+                  Image img = Image.memory(mainCategoryPicture);
                   return SizedBox(
                     height: 280,
                     child: GestureDetector(
@@ -61,9 +65,7 @@ class StartPage extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                image: mainCategory.categoryName == "Chleby" ? const AssetImage(
-                                    'assets/images/chleby.jpg') : const AssetImage(
-                                    'assets/images/zupy.jpg'),
+                                image: img.image,
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -86,9 +88,6 @@ class StartPage extends StatelessWidget {
     );
   }
 }
-
-
-
 
 
 // child: ListView.builder(
