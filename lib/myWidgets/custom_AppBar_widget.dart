@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:meal_orders/controllers/meal_controller.dart';
 import 'package:meal_orders/pages/admin_panel_page.dart';
 import 'package:meal_orders/pages/cart_page.dart';
 import 'package:meal_orders/pages/start_page.dart';
@@ -25,10 +26,19 @@ class CustomAppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    MealController mealController = Get.put(MealController());
+
     return AppBar(
       automaticallyImplyLeading: Get.currentRoute == '/StartPage' ? false : true,
       leading:Get.currentRoute != '/' && Get.currentRoute != '/StartPage'? GestureDetector(
         onTap: (){
+          if(Get.currentRoute == '/AddMealPage'){
+            mealController.editingMeal.value = false;
+            mealController.meatCheckBox.value = false;
+            mealController.veganCheckBox.value = false;
+            Get.back();
+          }
           Get.back();
         },
           child: const Icon(Icons.arrow_back_ios)) : const SizedBox(),

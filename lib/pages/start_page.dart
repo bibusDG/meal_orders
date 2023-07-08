@@ -59,21 +59,24 @@ class StartPage extends StatelessWidget {
                       child: Stack(
                         children: [
                           Card(
+                            // shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                          margin: const EdgeInsets.all(10.0),
-                          color: Colors.white,
+                          margin: const EdgeInsets.all(30.0),
+                          // color: Colors.transparent,
                           child: Container(
                             decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              // shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 image: img.image,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.fill
                               ),
                             ),
                           ),
                         ),
                           Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Text(mainCategory.categoryName, style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
+                            alignment: const Alignment(0,1.15),
+                            child: Text(mainCategory.categoryName, style: const TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
                           ),
                       ]),
                     ),

@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:meal_orders/models/user_model.dart';
+
+import '../controllers/meal_controller.dart';
 
 class CustomCupertinoTextField extends StatelessWidget {
   const CustomCupertinoTextField({
@@ -22,25 +26,29 @@ class CustomCupertinoTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    MealController mealController = Get.find();
+
     TextInputType _keyboardType = keyboardType;
     TextAlignVertical _textAlignment = textAlignment;
-
     TextEditingController _textController = TextEditingController();
-    if(key == const Key('CategoryName')){
-      _textController.text = controller.newCategory.categoryName;
-    }else if(key == const Key('MealName')){
-      _textController.text = controller.newMeal.mealName;
-    }else if(key == const Key('MealPrice')){
-      _textController.text = controller.newMeal.mealPrice;
-    }else if(key == const Key('MealDescription')){
-      _textController.text = controller.newMeal.mealDescription;
-    }
 
+    if(mealController.editingMeal.isTrue){
+      if(key == const Key('CategoryName')) {
+        _textController.text = controller.newCategory.categoryName;
+      }else if(key == const Key('MealName')){
+        _textController.text = controller.newMeal.mealName;
+      }else if(key == const Key('MealPrice')){
+        _textController.text = controller.newMeal.mealPrice;
+      }else if(key == const Key('MealDescription')){
+        _textController.text = controller.newMeal.mealDescription;
+      }
+    }
     return SizedBox(
       height: 50,
       width: 300,
       child: CupertinoTextField(
-        controller: _textController,
+        controller: mealController.editingMeal.isTrue? _textController : null,
         obscuringCharacter: '*',
         obscureText: obscureText,
         keyboardType: _keyboardType,
@@ -52,27 +60,31 @@ class CustomCupertinoTextField extends StatelessWidget {
         placeholder: placeholder,
         cursorHeight: 20.0,
         onChanged: (text) {
-          if(key == const Key('CategoryName')){
+          if(key == const Key('CategoryName')) {
             controller.newCategory.categoryName = text;
-            // controller.refreshNewCategoryModel();
+            mealController.editingMeal.isFalse?
+            controller.refreshNewCategoryModel() : null;
           }else if(key == const Key('MealName')){
             controller.newMeal.mealName = text;
-            // controller.refreshNewMealModel();
+            mealController.editingMeal.isFalse?
+            controller.refreshNewMealModel() : null;
           }else if(key == const Key('MealPrice')){
             controller.newMeal.mealPrice = text;
-            // controller.refreshNewMealModel();
+            mealController.editingMeal.isFalse?
+            controller.refreshNewMealModel() : null;
           }else if(key == const Key('MealDescription')){
             controller.newMeal.mealDescription = text;
-            // controller.refreshNewMealModel();
+            mealController.editingMeal.isFalse?
+            controller.refreshNewMealModel() : null;
           }else if(key == const Key('registrationUserName')){
             controller.user.userName = text;
-            // controller.refreshUserModel;
+            controller.refreshUserModel;
           }else if(key == const Key('registrationUserSurname')){
             controller.user.userSurName = text;
-            // controller.refreshUserModel;
+            controller.refreshUserModel;
           }else if(key == const Key('registrationLogin')){
             controller.user.userLogin = text;
-            // controller.refreshUserModel;
+            controller.refreshUserModel;
           }else if(key == const Key('registrationPassword')){
             controller.user.userPassword = text;
             // controller.refreshUserModel;
@@ -81,10 +93,10 @@ class CustomCupertinoTextField extends StatelessWidget {
             // controller.refreshUserModel;
           }else if(key == const Key('accountLogin')){
             controller.user.userLogin = text;
-            // controller.refreshUserModel;
+            controller.refreshUserModel;
           }else if(key == const Key('accountPassword')){
             controller.user.userPassword = text;
-            // controller.refreshUserModel;
+            controller.refreshUserModel;
           }
 
         },
@@ -93,3 +105,6 @@ class CustomCupertinoTextField extends StatelessWidget {
     );
   }
 }
+//
+// textController.selection =
+// TextSelection.collapsed(offset: textController.text.length);

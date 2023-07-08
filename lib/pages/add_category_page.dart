@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,7 +60,19 @@ class AddCategoryPage extends StatelessWidget {
                     mainCategoryController.newCategory.categoryPicture = pictureOfMainCategory;
                     mainCategoryController.refreshNewCategoryModel();
                   }, icon: const Icon(Icons.photo_library_outlined, size: 50.0,), padding: const EdgeInsets.all(0.0),),
-                  const SizedBox(height: 40.0,),
+                  mainCategoryController.newCategory.categoryPicture != '' ?
+                      Column(
+                        children: [
+                          const SizedBox(height: 10.0,),
+                          SizedBox(
+                            width: 180,
+                            height: 180,
+                            child: Image(
+                              image: Image.memory(const Base64Decoder().convert(mainCategoryController.newCategory.categoryPicture)).image,)
+                          )
+                        ],
+                      ) : const SizedBox(),
+                  const SizedBox(height: 10.0,),
                   mainCategoryController.newCategory.categoryName != '' && mainCategoryController.newCategory.categoryPicture != ''?
                   Column(
                     children: [
@@ -85,4 +99,3 @@ class AddCategoryPage extends StatelessWidget {
     );
   }
 }
-
