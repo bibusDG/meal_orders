@@ -59,11 +59,12 @@ class ProductsPage extends StatelessWidget {
                           IconButton(
                             iconSize: 30.0,
                               color: Colors.white,
-                              onPressed: (){
+                              onPressed: () async{
                               mealController.editingMeal.value = true;
-                              mealController.updateMeal(mealModel);
-                              var mealDocumentID = snapshot.data.docs[index].id;
-                              Get.to(()=>const AddMealPage(), arguments: mealDocumentID);
+                              await mealController.updateMeal(mealModel);
+                              mealController.mealDocumentID.value = await snapshot.data.docs[index].id;
+                              // var mealDocumentID = await snapshot.data.docs[index].id;
+                              Get.to(()=>const AddMealPage(), arguments: _category);
                               },
                               icon: const Icon(Icons.edit))
                         ],),

@@ -38,8 +38,9 @@ class CustomAppBarWidget extends StatelessWidget {
             mealController.meatCheckBox.value = false;
             mealController.veganCheckBox.value = false;
             Get.back();
+          }else{
+            Get.back();
           }
-          Get.back();
         },
           child: const Icon(Icons.arrow_back_ios)) : const SizedBox(),
       actions: [
@@ -72,7 +73,7 @@ class CustomAppBarWidget extends StatelessWidget {
                 CupertinoActionSheetAction(onPressed: () {}, child: const Text('Zmień swój login')),
                 CupertinoActionSheetAction(onPressed: () {
                   Get.back();
-                  Get.to(() => const AdminPanelPage());
+                  Get.to(() => const AdminPanelPage(), arguments: arguments);
                 }, child: const Text('Panel administratora')),
               ],
             ) :

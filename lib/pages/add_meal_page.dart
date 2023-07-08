@@ -19,7 +19,8 @@ class AddMealPage extends StatelessWidget {
 
     UserController _user = Get.find();
     MealController mealController = Get.put(MealController());
-    var mealDocumentID = Get.arguments;
+    // var mealDocumentID = Get.arguments;
+    // MainCategoryModel _category = Get.arguments;
 
     const double _itemExtent = 32.0;
     List _mainCategoryList = [];
@@ -89,7 +90,9 @@ class AddMealPage extends StatelessWidget {
                     }else{
                       return IconButton(onPressed: () async{
                         try{
-                          await ProductFirebaseServices().updateProduct(newMeal: mealController.newMeal, mealDocumentID: mealDocumentID);
+                          await ProductFirebaseServices().updateProduct(newMeal: mealController.newMeal, mealDocumentID: mealController.mealDocumentID.value);
+                          mealController.mealDocumentID.value = '';
+                          Get.to(()=>const ProductsPage(), arguments: mealController.newMeal);
                         }catch(error){}
                       }, icon: const Icon(Icons.refresh));
                     }
