@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/controllers/order_controller.dart';
@@ -54,17 +57,18 @@ class UserOrdersPage extends StatelessWidget {
                       return ListView.builder(
                           itemExtent: 180,
                           itemCount: snapshot.data.docs.length,
-                          itemBuilder: (BuildContext context, int index) {
+                          itemBuilder: (BuildContext context, int index){
                             OrderModel userOrder = OrderModel.fromJson(Map<String, dynamic>.from(snapshot.data.docs[index].data()));
                             List items = [];
 
                             ///setting gallery of meal pictures
+                            ///Image.memory(const Base64Decoder().convert(mealController.newMeal.mealPicture)).image,)
 
                             for(var item in userOrder.articlesList){
-                              items.add(item['mealPicture']);
+                              items.add(Image.memory(const Base64Decoder().convert(item['mealPicture'])).image);
                             }
                             pictures[index] = items;
-                            items = [];
+                            // items = [];
 
                             ///
                             return GestureDetector(
@@ -114,11 +118,32 @@ class UserOrdersPage extends StatelessWidget {
                                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     const SizedBox(height: 5.0,),
-                                    Text(pictures[index].toString()),
+                                    SizedBox(
+                                      width: 250,
+                                      height: 110,
+                                      child: Swiper(
+                                        viewportFraction: 0.8,
+                                        scale: 0.8,
+                                        loop: false,
+                                        itemBuilder: (BuildContext context, int ind){
+                                          return Container(
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: pictures[index][ind],
+                                                    fit: BoxFit.fill
+                                                ),
+                                                color: Colors.black,
+                                                borderRadius: BorderRadius.circular(10.0)),
+                                            // width: 110,
+                                            // height: 110,
+                                            // color: Colors.black,
+                                          );
+                                        },
+                                          itemCount: pictures[index].length),
+                                    ),
+                                    // Text(pictures[index].toString()),
 
-                                    ///TODO picture gallery of ordered meals (carousel, card swiper)///
-
-                                    const SizedBox(height: 110.0,),
+                                    const SizedBox(height: 20.0,),
                                     // SizedBox(width: 5.0,),
                                     Center(child: Text(userOrder.orderStatus, style: TextStyle(
                                       color: userOrder.orderStatus == "Do odbioru" ? Colors.lightGreenAccent : Colors.white,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:meal_orders/myWidgets/custom_AppBar_widget.dart';
 import 'package:meal_orders/myWidgets/custom_cupertino_text_field.dart';
 import 'package:meal_orders/pages/products_page.dart';
 import 'package:meal_orders/services/firebase_services/product_firebase_services.dart';
+import 'package:meal_orders/services/photo_services/photo_from_gallery_services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class AddMealPage extends StatelessWidget {
@@ -308,10 +311,23 @@ class AddMealPage extends StatelessWidget {
                     CupertinoButton(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.black,
-                        child: mealController.editingMeal.value == false ? const Text('Dodaj') : const Text('Zmień'), onPressed: () {
-                      mealController.newMeal.mealPicture = 'picture';
-                      mealController.refreshNewMealModel();
+                        child: mealController.editingMeal.value == false ? const Text('Dodaj') : const Text('Zmień'), onPressed: () async{
+                          var productPicture = await PhotoFromGalleryServices().takeAPhotoFromGallery();
+                          mealController.newMeal.mealPicture = productPicture;
+                          mealController.refreshNewMealModel();
                     }),
+                    mealController.newMeal.mealPicture != '' ?
+                    Column(
+                      children: [
+                        const SizedBox(height: 10.0,),
+                        SizedBox(
+                            width: 180,
+                            height: 180,
+                            child: Image(
+                              image: Image.memory(const Base64Decoder().convert(mealController.newMeal.mealPicture)).image,)
+                        )
+                      ],
+                    ) : const SizedBox(),
                     const SizedBox(height: 40.0,)
 
                   ],

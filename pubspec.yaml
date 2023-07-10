@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore:
   flutter_slidable:
   image_picker:
+  card_swiper:
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:meal_orders/controllers/cart_controller.dart';
@@ -22,6 +24,8 @@ class DetailedProductPage extends StatelessWidget {
     UserController _user = Get.find();
     MealModel _product = Get.arguments;
     _product.chosenVariant = mealController.newMeal.chosenVariant;
+    final mealPicture = const Base64Decoder().convert(_product.mealPicture);
+    Image img = Image.memory(mealPicture);
 
     return ResponsiveScaledBox(
       width: 360,
@@ -35,10 +39,18 @@ class DetailedProductPage extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 20.0,),
-              const Center(
-                child: SizedBox(
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: img.image,
+                          fit: BoxFit.cover
+                      ),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  // width: 210,
                   height: 200,
-                  child: Center(child: Text('Photo')),
+                  // color: Colors.black,
                 ),
               ),
               const SizedBox(height: 20.0,),

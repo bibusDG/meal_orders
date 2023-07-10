@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -44,6 +46,8 @@ class ProductsPage extends StatelessWidget {
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (BuildContext context, int index){
                     MealModel mealModel = MealModel.fromJson(Map<String, dynamic>.from(snapshot.data.docs[index].data()));
+                    final mealPicture = const Base64Decoder().convert(mealModel.mealPicture);
+                    Image img = Image.memory(mealPicture);
                   return SizedBox(
                     height: 150,
                     child: Slidable(
@@ -82,6 +86,10 @@ class ProductsPage extends StatelessWidget {
                               // SizedBox(width: 10.0,),
                               Container(
                                 decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: img.image,
+                                        fit: BoxFit.fill
+                                    ),
                                   color: Colors.black,
                                     borderRadius: BorderRadius.circular(10.0)),
                                 width: 110,
