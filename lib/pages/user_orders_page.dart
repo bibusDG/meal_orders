@@ -142,7 +142,7 @@ class UserOrdersPage extends StatelessWidget {
                                           itemCount: pictures[index].length),
                                     ),
                                     // Text(pictures[index].toString()),
-///done
+///don
                                     const SizedBox(height: 20.0,),
                                     // SizedBox(width: 5.0,),
                                     Center(child: Text(userOrder.orderStatus, style: TextStyle(
